@@ -1,0 +1,61 @@
+{% load static crispy_forms_tags %}
+
+
+{% block title %}
+
+Checkout
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Checkout</h1>
+
+<div class="order-info">
+
+<h3>Your order</h3>
+
+<ul>
+
+{% for key,value in request.session.cart.items %}
+
+<li>
+    {{ value.room }}|{{ value.room_type }}
+</li>
+
+<li>
+
+#{{ value.price }}
+
+<span>${{ value.total_price }}</span>
+
+<span>{{ value.image }}</span>
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+<p>Total: ${{ cart_total_amount }}</p>
+
+</div>
+
+
+<p>username:  {{user.username}} </p>
+
+{% if user.email %}
+<p> {{ user.email }} </p>
+{% endif %}
+<form method="post" class="order-form">
+
+    {% csrf_token %}
+    {{ form|crispy}}
+
+    <p><input type="submit" value="Place order"></p>
+
+
+
+</form>
+
+{% endblock %}

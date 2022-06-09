@@ -1,0 +1,66 @@
+{% extends 'Dashboard/base.html' %}
+{% load bootstrap3 %}
+{% block content %}
+<div class="content-section">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+ {% endif %}
+ <div class="row">
+        
+        <div class="col-sm-6">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 <fieldset>
+                        {{ u_form.non_field_errors }}
+                        {% for field in u_form %}
+                        <div class="row">
+                            <div class="col-md-2">{% bootstrap_label field.label %}</div>
+                            <div class="col-md-6">{% bootstrap_field field show_label=False %}</div>
+                        </div>
+                        {% endfor %}
+                </fieldset>
+
+                <fieldset>
+                    {{ p_form.non_field_errors }}
+                    {% for field in p_form %}
+                    <div class="row">
+                        <div class="col-md-2">{% bootstrap_label field.label %}</div>
+                        <div class="col-md-6">{% bootstrap_field field show_label=False %}</div>
+                    </div>
+                    {% endfor %}
+            </fieldset>
+
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <div class="media">
+                <img src="{{user.profile.image.url}}" width="170px" alt="" srcset="" class="rounded-circle account-img">
+                <div class="media-body ml-4 mt-4">
+                    <h2 class="account-heading">
+                        {{user.username|capfirst}}
+                    </h2>
+                    <p class="text-secondary">{{ user.email|capfirst }} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function(){
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+        
+    }, 2000);
+</script>
+{% endblock content %}

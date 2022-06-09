@@ -1,0 +1,625 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Rent4Less</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'media/download.jfif' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+  {% include 'nav.html' %}
+  <!-- End Header/Navbar -->
+<div style="margin-top: 80px">
+   {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+  {% endif %}
+</div>
+  <!-- ======= Intro Section ======= -->
+  <div class="intro intro-carousel swiper position-relative">
+
+
+    <div class="swiper-wrapper">
+
+      {% if estate %}
+          {% for estate in estate %}
+          <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url({{ estate.image.url }});">
+            <div class="overlay overlay-a"></div>
+            <div class="intro-content display-table">
+              <div class="table-cell">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-8">
+                        <h1 style="color: white;" style="font-size: 50px"> {{ estate.estate_name }}</h1>
+                        <p> #{{ estate.location }}</p>
+                      <img src="{{ estate.image.url }}" alt="" srcset="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+       {% else %}
+      <div class="swiper-slide carousel-item-a intro-item bg-image" style="background-image: url({% static 'assets/img/slide-1.jpg' %})">
+        <div class="overlay overlay-a"></div>
+        <div class="intro-content display-table">
+          <div class="table-cell">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-8">
+                  <div class="intro-body">
+                    <p class="intro-title-top">My Testing Pages
+                      <br> 78345
+                    </p>
+                    <h1 class="intro-title mb-4 ">
+                      <span class="color-b">204 </span> Mount
+                      <br> MainLand Site
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+
+
+  <!-- search method -->
+<div class="row mt-4">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-5 search">
+    <form action="{% url 'estate-search' %}" method="POST">
+      {% csrf_token %}*
+      <div class="input-group search_box">
+        <input type="search" class="form-control" id="search-estate" name="search" placeholder="Search Book" required>
+        <button class="btn btn-info input-group-text" type="submit"> Search  </button>
+      </div>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+  <div class="col-sm-4"></div>
+</div>
+  <!-- End Intro Section -->
+
+  <main id="main">
+
+    <!-- ======= Services Section ======= -->
+    <!-- End Services Section -->
+
+    <!-- ======= Latest Properties Section ======= -->
+
+    <!-- End Latest Properties Section -->
+
+    <!-- ======= All Room Section ======= -->
+    <<section class="section-news section-t8">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-wrap d-flex justify-content-between">
+              <div class="title-box">
+                <h2 class="title-a">Search For a Locations </h2>
+              </div>
+              <div class="title-link">
+                <a href="#">all Location
+                  <span class="bi bi-chevron-right"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          {% if apartment %}
+            {% for apartment in apartment %}
+            <div class="col-sm-4 mt-3">
+              <div class="card-box-b card-shadow">
+                <div class="img-box-b">
+                  <img src="{% static 'assets/img/post-2.jpg' %}" alt="" class="img-b img-fluid" height="80px">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-header-b">
+                    <div class="card-category-b">
+                      <a href="{% url 'property_detail' apartment.pk %}" class="category-b">{{ apartment }}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% endfor %}
+          {% else %}
+              <div class="col-sm-4">
+                <div class="card-box-b card-shadow news-box">
+                  <div class="img-box-b">
+                    <img src="{% static 'assets/img/post-2.jpg' %}" alt="" class="img-b img-fluid">
+                  </div>
+                  <div class="card-overlay">
+                    <div class="card-header-b">
+                      <div class="card-category-b">
+                        <a href="#" class="category-b">House</a>
+                      </div>
+                      <div class="card-title-b">
+                        <h2 class="title-2">
+                          <a href="blog-single.html">House is comming
+                            <br> new</a>
+                        </h2>
+                      </div>
+                      <div class="card-date">
+                        <span class="date-b">18 Sep. 2017</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End carousel item -->
+
+              <div class="col-sm-4">
+
+                <div class="card-box-b card-shadow news-box">
+                  <div class="img-box-b">
+                    <img src="{% static 'assets/img/post-5.jpg' %}" alt="" class="img-b img-fluid">
+                  </div>
+                  <div class="card-overlay">
+                    <div class="card-header-b">
+                      <div class="card-category-b">
+                        <a href="#" class="category-b">Travel</a>
+                      </div>
+                      <div class="card-title-b">
+                        <h2 class="title-2">
+                          <a href="blog-single.html">Travel is comming
+                            <br> new</a>
+                        </h2>
+                      </div>
+                      <div class="card-date">
+                        <span class="date-b">18 Sep. 2017</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End carousel item -->
+
+              <div class="col-sm-4">
+                <div class="card-box-b card-shadow news-box">
+                  <div class="img-box-b">
+                    <img src="{% static 'assets/img/post-7.jpg' %}" alt="" class="img-b img-fluid">
+                  </div>
+                  <div class="card-overlay">
+                    <div class="card-header-b">
+                      <div class="card-category-b">
+                        <a href="#" class="category-b">Park</a>
+                      </div>
+                      <div class="card-title-b">
+                        <h2 class="title-2">
+                          <a href="#">Park is comming
+                            <br> new</a>
+                        </h2>
+                      </div>
+                      <div class="card-date">
+                        <span class="date-b">18 Sep. 2017</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- End carousel item -->
+
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+    </section>
+    <!-- End Agents Section -->
+
+
+
+
+
+    <!-- ======= Latest News Section ======= -->
+    <section class="section-news section-t8">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-wrap d-flex justify-content-between">
+              <div class="title-box">
+                <h2 class="title-a">Latest News</h2>
+              </div>
+              <div class="title-link">
+                <a href="blog-grid.html">All News
+                  <span class="bi bi-chevron-right"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="news-carousel" class="swiper">
+          <div class="swiper-wrapper">
+
+            <div class="carousel-item-c swiper-slide">
+              <div class="card-box-b card-shadow news-box">
+                <div class="img-box-b">
+                  <img src="{% static 'assets/img/post-2.jpg' %}" alt="" class="img-b img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-header-b">
+                    <div class="card-category-b">
+                      <a href="#" class="category-b">House</a>
+                    </div>
+                    <div class="card-title-b">
+                      <h2 class="title-2">
+                        <a href="#">House is comming
+                          <br> new</a>
+                      </h2>
+                    </div>
+                    <div class="card-date">
+                      <span class="date-b">18 Sep. 2017</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+            <div class="carousel-item-c swiper-slide">
+              <div class="card-box-b card-shadow news-box">
+                <div class="img-box-b">
+                  <img src="{% static 'assets/img/post-5.jpg' %}" alt="" class="img-b img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-header-b">
+                    <div class="card-category-b">
+                      <a href="#" class="category-b">Travel</a>
+                    </div>
+                    <div class="card-title-b">
+                      <h2 class="title-2">
+                        <a href="blog-single.html">Travel is comming
+                          <br> new</a>
+                      </h2>
+                    </div>
+                    <div class="card-date">
+                      <span class="date-b">18 Sep. 2017</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+            <div class="carousel-item-c swiper-slide">
+              <div class="card-box-b card-shadow news-box">
+                <div class="img-box-b">
+                  <img src="{% static 'assets/img/post-7.jpg' %}" alt="" class="img-b img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-header-b">
+                    <div class="card-category-b">
+                      <a href="#" class="category-b">Park</a>
+                    </div>
+                    <div class="card-title-b">
+                      <h2 class="title-2">
+                        <a href="#">Park is comming
+                          <br> new</a>
+                      </h2>
+                    </div>
+                    <div class="card-date">
+                      <span class="date-b">18 Sep. 2017</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+            <div class="carousel-item-c swiper-slide">
+              <div class="card-box-b card-shadow news-box">
+                <div class="img-box-b">
+                  <img src="{% static 'assets/img/post-3.jpg' %}" alt="" class="img-b img-fluid">
+                </div>
+                <div class="card-overlay">
+                  <div class="card-header-b">
+                    <div class="card-category-b">
+                      <a href="#" class="category-b">Travel</a>
+                    </div>
+                    <div class="card-title-b">
+                      <h2 class="title-2">
+                        <a href="#">Travel is comming
+                          <br> new</a>
+                      </h2>
+                    </div>
+                    <div class="card-date">
+                      <span class="date-b">18 Sep. 2017</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End carousel item -->
+
+          </div>
+        </div>
+
+        <div class="news-carousel-pagination carousel-pagination"></div>
+      </div>
+    </section><!-- End Latest News Section -->
+
+    <!-- ======= Testimonials Section ======= -->
+    <section class="section-testimonials section-t8 nav-arrow-a">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-wrap d-flex justify-content-between">
+              <div class="title-box">
+                <h2 class="title-a">Testimonials</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="testimonial-carousel" class="swiper">
+          <div class="swiper-wrapper">
+
+            {% if testemonial %}
+            {% for testemonial in testemonial %}
+            <div class="carousel-item-a swiper-slide">
+              <div class="testimonials-box">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6">
+                    <div class="testimonial-img">
+                      <img src="{{ testemonial.images.url }}" alt="" class="img-fluid" height="200px" width="400px">
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <div class="testimonial-ico">
+                      <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <div class="testimonials-content">
+                      <p class="testimonial-text">
+                        {{ testemonial.content }}
+                      </p>
+                    </div>
+                    <div class="testimonial-author-box">
+                      <img src="{{ testemonial.images.url }}" alt="" class="testimonial-avatar">
+                      <h5 class="testimonial-author">{{testemonial.name}}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}<!-- End carousel item -->
+            {% else %}
+            <div class="carousel-item-a swiper-slide">
+              <div class="testimonials-box">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6">
+                    <div class="testimonial-img">
+                      <img src="{% static 'assets/img/testimonial-2.jpg' %}" alt="" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <div class="testimonial-ico">
+                      <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <div class="testimonials-content">
+                      <p class="testimonial-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
+                        debitis hic ber quibusdam
+                        voluptatibus officia expedita corpori.
+                      </p>
+                    </div>
+                    <div class="testimonial-author-box">
+                      <img src="{% static 'assets/img/mini-testimonial-2.jpg' %}" alt="" class="testimonial-avatar">
+                      <h5 class="testimonial-author">Pablo & Emma</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="carousel-item-a swiper-slide">
+              <div class="testimonials-box">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6">
+                    <div class="testimonial-img">
+                      <img src="{% static 'assets/img/testimonial-2.jpg' %}" alt="" class="img-fluid">
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <div class="testimonial-ico">
+                      <i class="bi bi-chat-quote-fill"></i>
+                    </div>
+                    <div class="testimonials-content">
+                      <p class="testimonial-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
+                        debitis hic ber quibusdam
+                        voluptatibus officia expedita corpori.
+                      </p>
+                    </div>
+                    <div class="testimonial-author-box">
+                      <img src="{% static 'assets/img/mini-testimonial-2.jpg' %}" alt="" class="testimonial-avatar">
+                      <h5 class="testimonial-author">Pablo & Emma</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            <!-- End carousel item -->
+
+          </div>
+        </div>
+        <div class="testimonial-carousel-pagination carousel-pagination"></div>
+
+      </div>
+    </section><!-- End Testimonials Section -->
+
+    <!-- Start Service -->
+
+    <section class="section-services section-t8">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="title-wrap d-flex justify-content-between">
+              <div class="title-box">
+                <h2 class="title-a">Our Services</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card-box-c foo">
+              <div class="card-header-c d-flex">
+                <div class="card-box-ico">
+                  <span class="bi bi-building"></span>
+                </div>
+                <div class="card-title-c align-self-center">
+                  <h2 class="title-c">Total Real Estate</h2>
+                </div>
+              </div>
+              <div class="card-body-c">
+                <p class="content-c">
+                  One of the best total real estate company in nigeria and africa, with an estimate of 80 facilities in nigeria and africa we manage
+                </p>
+              </div>
+              <div class="card-footer-c">
+                <a href="#" class="link-c link-icon">Read more
+                  <span class="bi bi-chevron-right"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-box-c foo">
+              <div class="card-header-c d-flex">
+                <div class="card-box-ico">
+                  <span class="bi bi-house"></span>
+                </div>
+                <div class="card-title-c align-self-center">
+                  <h2 class="title-c">House Rentals</h2>
+                </div>
+              </div>
+              <div class="card-body-c">
+                <p class="content-c">
+                  A cool looking facilities management company full with strong vibes and motive with a strong vibrant growth in the future and now.
+                </p>
+              </div>
+              <div class="card-footer-c">
+                <a href="#" class="link-c link-icon">Read more
+                  <span class="bi bi-calendar4-week"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card-box-c foo">
+              <div class="card-header-c d-flex">
+                <div class="card-box-ico">
+                  <span class="bi bi-card-checklist"></span>
+                </div>
+                <div class="card-title-c align-self-center">
+                  <h2 class="title-c">Facility Management</h2>
+                </div>
+              </div>
+              <div class="card-body-c">
+                <p class="content-c">
+                  renting out affordable rooms which is cost effective and cool with a nice looking environment.
+                </p>
+              </div>
+              <div class="card-footer-c">
+                <a href="#" class="link-c link-icon">Read more
+                  <span class="bi bi-chevron-right"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ======= End of Service ======= -->
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <section class="section-footer">
+    <div class="container">
+      {% include "footer.html" %}
+    </div>
+  </section>
+  <!-- End  Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+<!--  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+  <script>
+      var availableTags = [];
+      $.ajax({
+		type: "GET",
+		url: "{% url 'estate-listing' %}",
+		success: function (response) {
+            startAutocomplete(response);
+		}
+		});
+
+	function startAutocomplete(availableTags)
+	{
+        $( "#search-estate" ).autocomplete({
+          source: availableTags
+        });
+     }
+  </script>
+
+  <script>
+    setTimeout(function(){
+        if ($('#msgs').length > 0) {
+            $('#msgs').remove();
+        }
+    }, 4000);
+</script>
+
+</body>
+
+</html>

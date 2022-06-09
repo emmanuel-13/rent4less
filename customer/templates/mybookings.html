@@ -1,0 +1,57 @@
+{% extends "Dashboard/base.html" %}
+
+{% block content %}
+
+{% comment %} {%  app_tags %} {% endcomment %}
+<h3 class="text-center  text-success"> My Bookings </h3>
+{% if bookings %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Room</th>
+            <th>Price</th>
+            <th>Check in</th>
+            <th>Status</th>
+            {% if bookings.status == False %}
+            <th> Checkout </th>
+            <th> Cancel </th>
+            {% else %}
+            <th> Checkout </th>
+            <th> proccess </th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for bookings in bookings %}
+        <tr>
+            <td> {{ bookings.guest }}
+            <td>{{bookings.room}}</td>
+            <td>#{{bookings.room.price }}</td>
+            <td>{{bookings.check_in}}</td>
+            <td>{% if bookings.status == False %} Incompleted {% else %} Completed {% endif %}</td>
+            {% if bookings.status == False %}
+            <td><button class="btn btn-info">  Checkout </button></td>
+            <td><button class="btn btn-danger"> Cancel Booking </button></td>
+            {% else %}
+            <td><button class="btn btn-success">  Completed </button></td>
+            <td><button class="btn btn-success">  Running </button></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+{% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert" id="msgs">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+{% endfor %}
+<p> no booking found </p>
+
+{% endif %}
+
+{% endblock  %}

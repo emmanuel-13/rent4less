@@ -1,0 +1,41 @@
+{% extends 'Dashboard/base.html' %}
+{% load crispy_forms_tags bootstrap3 %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-3">
+
+    </div>
+
+    <div class="col-sm-6 mt-4">
+            <a href="{% url 'apartment_list' estate.estate_name %}" style="text-decoration:none;color: blue">
+                <p class="card-header">
+                     Apartment Name: {{ apartment.estate_name }}
+                </p>
+            </a>
+        <div style="display: flex; justify-content: space-around; margin-bottom: 20px">
+
+            <p class="pt-4">Block: {{ apartment.block }}</p>
+
+            <p class="pt-4"> Flat ID: <span> {{ apartment.flat_id }} </span></p>
+
+        </div>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+            <div class="row">
+                <div class="col-md-3">{% bootstrap_label field.label %}</div>
+                <div class="col-md-8">{% bootstrap_field field show_label=False %}</div>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-info form-control"> Update </button>
+        </form>
+    </div>
+
+    <div class="col-sm-3">
+
+    </div>
+</div>
+
+{% endblock content %}

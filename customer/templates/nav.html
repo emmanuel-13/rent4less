@@ -1,0 +1,116 @@
+ <!-- ======= Property Search Section ======= -->
+ <div class="click-closed"></div>
+ <!--/ Form Search Star /-->
+ <div class="box-collapse">
+   <div class="title-box-d">
+     <h3 class="title-d">Account Info</h3>
+   </div>
+   <span class="close-box-collapse right-boxed bi bi-x"></span>
+       <div class="box-collapse-wrap">
+       
+           {% if not user.is_authenticated %}
+           <div class="card-header" style="width: 400px">
+             <a href="{% url 'login' %}">
+               <i class="bi bi-box-arrow-in-right pr-4"></i> <span>LOGIN</span>
+             </a>
+           </div>
+           <hr>
+           {% elif user.is_authenticated and user.is_staff and user.is_superuser %}
+           <div class="card-header" style="width: 400px">
+             <a href="{% url 'dashboard' %}">
+                 <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
+             </a>
+            </div>
+           <hr>
+
+           <div class="card-header" style="width: 400px">
+            <a href="/admin">
+                <i class="bi bi-speedometer2"></i> <span>Admin</span>
+            </a>
+           </div>
+          <hr>
+
+           <div class="card-header" >
+             <a href="{% url 'logout' %}">
+               <i class="bi bi-box-arrow-in-left "></i> <span> Logout </span>
+             </a>
+           </div>
+           <hr>
+           
+           {% elif user.is_authenticated %}
+           <p class="card-header" style="width: 400px">
+            <a href="{% url 'user_dashboard' %}">
+             <i class="bi bi-speedometer2 pr-4"></i> <span>Dashboard</span>
+            </a>
+           </p>
+           <hr>
+           <p class="card-header">
+            <a href="{% url 'logout' %}">
+              <i class="bi bi-box-arrow-in-left"></i> <span> Logout </span>
+            </a>
+           </p>
+           <hr>
+           {% endif %}
+   </div>
+ </div><!-- End Property Search Section -->>
+
+
+ <!-- ======= Header/Navbar ======= -->
+ <nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+   <div class="container">
+     
+     <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
+       <span></span>
+       <span></span>
+       <span></span>
+     </button>
+     <a class="navbar-brand text-brand" href="{% url 'home' %}">Rent4<span class="color-b">Less</span></a>
+
+     <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+       <ul class="navbar-nav">
+
+         <li class="nav-item {% if request.resolver_match.view_name == 'home' %} active {% endif %}">
+           <a class="nav-link" href="{% url 'home' %}">Home</a>
+         </li>
+
+         <li class="nav-item {% if request.resolver_match.view_name == 'about' %} active {% endif %}">
+           <a class="nav-link " href="{% url 'about' %}">About</a>
+         </li>
+
+          <li class="nav-item {% if request.resolver_match.view_name == 'contact' %} active {% endif %}">
+           <a class="nav-link " href="{% url 'contact' %}">Contact</a>
+         </li>
+
+         <li class="nav-item {% if request.resolver_match.view_name == 'property' %} active {% endif %}">
+           <a class="nav-link " href="{% url 'property' %}">Property</a>
+         </li>
+
+       </ul>
+     </div>
+
+    {% if user.is_authenticated %}
+      {{user.username}}
+    {% else %}
+        {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert alert-{{ message.tags }}" id="msgs">
+                  {{ message|safe }}
+            </div>
+          {% endfor %}
+      {% endif %}
+    {% endif %}
+     <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse ml-2" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01">
+       <i class="bi bi-person-circle pr-4"></i>
+     </button>
+
+       <button type="button" class="btn btn-b-n navbar-toggle-box navbar-toggle-box-collapse ml-2" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02">
+           <a href="{% url 'cart_display' %}">
+                <i class="bi bi-book"></i><sup>{% if total_cart %} {{total_cart }} {% endif %} </sup>
+           </a>
+     </button>
+
+
+     
+   </div>
+ </nav>
+ 

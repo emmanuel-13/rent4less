@@ -1,0 +1,56 @@
+{% extends 'Dashboard/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+<!--                {% comment %} {% if room.images %}-->
+<!--             <p> <img src="{{ room.images.url }}" height="300px" width="300px"> </p>-->
+<!--            {% else %}-->
+<!--                <p> room image is working-->
+<!--            {% endif %} {% endcomment %}-->
+
+
+            {% if room.image1 %}
+            <p> <img src="{{ room.image1.url }}" height="150px" width="200px">  </p>
+
+            {% else %}
+            Image 1 goes here
+            {% endif %}
+
+
+            {% if room.image2 %}
+                <p> <img src="{{ room.image2.url }}" height="150px" width="200px">  </p>
+            {% else %}
+                image2 goes here
+            {% endif %}
+        </div>
+
+        <div class="col-sm-1"></div>
+
+        <div class="col-sm-5- ml-4">
+            <p> <a href="{% url 'room_list' %}" style="text-decoration: none;">Apartment Name: <span> {{ room.apartment_name_rooms }} </span></a></p>
+            <p>Block No: {{ room.blocks }} </p>
+            {% if room.unique_room_id %}
+            <p> Room ID: {{ room.unique_room_id }} </p>
+            <p> Room Features: {{ room.ammenities }} </p>
+            <p> Room Type: <span>{{ room.room_types }} </span></p>
+            <p> Room Price #{{ room.price }} </p>
+            {% if room.occupied == False %}
+                <p> Available </p>
+            {% else %}
+                <p> Occupied </p>
+            {% endif %}
+
+            {% else %}
+                Generated Room ID:{{room.room_id}}
+            {% endif %}
+        </div>
+
+        <div class="col-sm-2"></div>
+    </div>
+{% endblock %}
+
+<!--  -->

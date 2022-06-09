@@ -1,0 +1,101 @@
+{% extends 'Dashboard/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% if room %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h3 class="card-header"> Rooms </h3>
+        <p class="text-right"><a href="#"> export csv </a></p>
+
+    <div class="row" style="overflow-x: scroll;">
+        <form method="get">
+            <div class="col-sm-12 mt-4">
+                {{ myfilter.form }}
+                <button type="submit" class="btn btn-success"> Search </button>
+            </div>
+        </form>
+    </div>
+    <div class="row" style="overflow-x: scroll;">
+        <div class="col-sm-12 mt-4">
+            {% if myfilter.qs %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th> Apartment Name </th>
+                        <th> Block </th>
+                        <th> Room ID </th>
+                        <th> Edit </th>
+                        <th> Unique Room Type </th>
+                        <th> Room Type </th>
+                        <th> Price </th>
+                        <th> Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rooms in myfilter.qs %}
+                    <tr> 
+                        <td>
+                            <a href="{% url 'room_details' rooms.pk %}" style="text-decoration: none">
+                                {{ rooms.apartment_name_rooms }}
+                            </a>
+                        </td>
+                        <td> {{ rooms.blocks }} </td>
+                        <td> {{ rooms.room_id }} </td>
+                        <td>
+                            <a href="{% url 'room_detail_update' rooms.pk %}">
+                                <button class="btn btn-success"> Update </button>
+                            </a>
+                        </td>
+                        {% if rooms.unique_room_id %}
+                        <td> {{rooms.unique_room_id }} </td>
+                        
+                        <td> {{rooms.room_types }} </td>
+                        <td> #{{ rooms.price }}</td>
+                        
+                        {% if rooms.occupied == "running" %}
+                            <td style="background-color: red; color: white"> Occupied </td>
+                        {% elif rooms.occupied == "pending" %}
+                        <td style="background-color: green; color: white"> Pending </td> 
+                        {% else %}
+                        <td> Avaliable </td>
+                        {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>  
+            </table>
+            
+            {% else %}
+                <p> no room found </p>
+                <button class="btn btn-info"><a href="{% url 'room_list' %}"> view all </a></button>
+            {% endif %} 
+            
+        </div>
+    </div>
+    {% else %}
+        <h2 class="card-header"> Room List </h2>
+        {% if apartment.delete %}
+            <p class="card-body"> All room have been deleted </p>
+        {% else %}
+            <p class="card-body" style="margin-bottom: 250px"> No room added now </p>
+        {% endif %}
+    {% endif %}
+
+<script>
+    setTimeout(function(){
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+        
+    }, 2000);
+</script>
+{% endblock %}
+
+

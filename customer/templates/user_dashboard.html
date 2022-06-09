@@ -1,0 +1,125 @@
+{% extends "Dashboard/base.html" %} {% load static %} {% block content %}
+<!-- Content Start -->
+
+
+{% if messages %}
+              {% for message in messages %}
+                  <div class="text-center alert alert-{{ message.tags }}" id="msgs">
+                        {{ message|safe }}
+                  </div>
+              {% endfor %}
+          {% endif %}
+<div class="row">
+  <div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Bookings
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+
+                    {% if booking_counter %}
+                       {{ booking_counter }}
+                    {% else %}
+                        no booking made 
+                    {% endif %}
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-book fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Name
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        {{users}}
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-home fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Room Taken
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        {% if booking_counter %}
+                            {{ booking_counter }}
+                        {% else %}
+                        no room booked
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-home fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">
+        Overview
+      </h6>
+    </div>
+    
+    <div class="card-body">
+        {% if booking %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th> Users </th>
+                <th> Rooms </th>
+                <th> Check IN</th>
+                <th> Status </th>
+                <th> Check OUT</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td> {{booking.guest }}</td>
+                <td> {{ booking.room.room_id }}</td>
+                <td> {{ booking.check_in}}</td>
+                <td> {% if booking.status == False %} Incompleted {% else %} Completed {% endif %}</td>
+                <td> {{ booking.check_out}}</td>
+            </tr>
+            {% endfor %}
+            
+            </tbody>
+        </table>
+        {% else %}
+        <p>
+            Five recent booking would appear here when the time is right for reference purposes and so.
+        </p>
+        {% endif %}
+    </div>
+</div>
+<!-- End Content-->
+
+{% endblock %}

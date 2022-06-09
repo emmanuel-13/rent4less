@@ -1,0 +1,133 @@
+{% extends 'Dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% load House_extras %}
+
+{% block content %}
+
+    {% if apartments %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h3 class="card-header"><a href="{% url 'estate_listing' %}" style="text-decoration: none"> {{ estate.estate_name }} </a></h3>
+        <p class="text-right"><a href="{% url 'apartment_csv' estate.estate_name %}"> Export To CSV </a></p>
+
+        <p class="text-left"> There {{ apartments|pluralize:"is,are" }} {{ apartment.count }} Apartment and {{estate.block_set.count }} Blocks in th{{ apartment|pluralize:"is,ese" }} Estate {{ estate.estate_name }} </p>
+
+    <div class="row" style="overflow-x: scroll;">
+        <form method="get">
+            <div class="col-sm-12 mt-4">
+                {{ myfilter.form }}
+                <button type="submit" class="btn btn-success"> Search </button>
+            </div>
+        </form>
+    </div>
+    <div class="row" style="overflow-x: scroll;">
+        <div class="col-sm-12 mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th> Block </th>
+                        <th> Flat ID </th>
+                        <th> Edit </th>
+                        <th> Apartment Type </th>
+                        <th> Flat Type </th>
+                        <th> Total Rooms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for apartment in apartments %}
+                    <tr class="text-center">
+                        <td>
+                                {{ apartment.block }}
+                        </td>
+                        <td>
+                            <a href="{% url 'apartment_room_test' apartment.flat_id %}" style="text-decoration: none">
+                                {{ apartment.flat_id }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'apartment_test'  apartment.pk %}">
+                                <button class="btn btn-success"> Update </button>
+                            </a>
+                        </td>
+                        {% if apartment.apartment_type == "S" %}
+                        <td> Shared Apartment </td>
+                        {% else %}
+                        <td> Exclusive Apartment </td>
+                        {% endif %}
+
+                        {% if apartment.bedroom_type %}
+                        <td> {{apartment.bedroom_type }} bedroom Flat</td>
+                        {% endif %}
+
+                        {% if apartment.bedroom_type %}
+                        <td> {{apartment.bedroom_type }}</td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <p> no apartment found </p>
+                    <button class="btn btn-info"><a href="{% url 'apartment_list' estate.estate_name %}"> view all </a></button>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button class="btn btn-info" style="margin-left: 1100px"><a href="{% url 'apartment_list' estate.estate_name %}" style="text-decoration: none" class="align: center"> show all </a></button>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if apartments.has_previous %}
+                    <li class="page-item">
+                        <a href="{% my_url 1 'page' request.GET.urlencode%}" class="page-link">&laquo; First </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="{% my_url apartments.previous_page_number 'page' request.GET.urlencode %}" class="page-link"> Previous </a>
+                    </li>
+                    {% endif %}
+                    
+                    <li class="page-item">
+                        <span class="page-link">
+                        Page {{ apartments.number}} of {{apartments.paginator.num_pages}}
+                        </span>
+                    </li>
+
+
+                    {% if apartments.has_next %}
+                    <li class="page-item">
+                        <a href="{% my_url apartments.next_page_number 'page' request.GET.urlencode %}" class="page-link"> Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="{% my_url apartments.paginator.num_pages 'page' request.GET.urlencode %}" class="page-link">&raquo; Last</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+            {% comment %} {% else %}
+                
+            {% endif %} {% endcomment %}
+
+        </div>
+    </div>
+    {% else %}
+        <h2 class="card-header"><a href="{% url 'estate_listing' %}" style="text-decoration: none"> Apartment List </a></h2>
+        {% if apartment.delete %}
+            <p class="card-body"> All room have been deleted </p>
+        {% else %}
+            <p class="card-body" style="margin-bottom: 250px"> No room found  </p>
+            <button class="btn btn-info"><a href="{% url 'apartment_list' estate.estate_name %}"> view all </a></button>
+        {% endif %}
+    {% endif %}
+
+<script>
+    setTimeout(function(){
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+
+    }, 2000);
+</script>
+{% endblock %}
+
+

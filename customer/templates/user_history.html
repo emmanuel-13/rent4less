@@ -1,0 +1,11 @@
+{% extends "Dashboard/base.html" %}
+
+{% block content %}
+ {% if booking %}
+
+ {{ booking }}
+
+ {% else %}
+    no history found
+ {% endif %}
+{% endblock %}

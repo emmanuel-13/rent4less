@@ -1,0 +1,44 @@
+{% extends 'Dashboard/base.html' %}
+
+{% block content %}
+    {% if messages %}
+            {% for message in messages %}
+                <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+    {% endif %}
+<div class="card-header">
+    <a href="{% url 'estate_list' %}" style="text-decoration: none;">{{estate|upper }}</a>
+</div>
+
+    <div class="row mt-4">
+        {% if estate.block_set.all %}
+            {% for block in estate.block_set.all %}
+            <div class="col-sm-4">
+                <div class="card mb-4">
+                    <a href="{% url 'block_details' estate.pk block.pk %}" style="text-decoration: none;">
+                    <div class="card-body text-center">
+                    <br> Block {{ block|upper }}<br>
+                    Total Flat {{ block.total_flat }}
+                    </div>
+                    </a>
+
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <p> {{msg}}</p>
+        {% endif %}
+
+</div>
+<script>
+    setTimeout(function(){
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+        
+    }, 2000);
+</script>
+
+{% endblock content %}

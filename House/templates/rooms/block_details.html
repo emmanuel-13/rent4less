@@ -1,0 +1,54 @@
+{% extends 'Dashboard/base.html' %}
+
+{% block content %}
+    {% if messages %}
+            {% for message in messages %}
+                <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+    {% endif %}
+<div class="card-header">
+    <a href="{% url 'estate_detailing' estate %}" style="text-decoration: none;">{{estate}}</a>|Block {{ estate.block_set.first }}
+</div>
+
+    <div class="row mt-4">
+        {% if apartment %}
+            {% for apartmentD in apartment %}
+            <div class="col-sm-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <br> {{ apartmentD.flat_id|upper }}
+                        {% if apartmentD.flat_id in room %}
+                        <a href="{% url 'room_det' apartmentD.flat_id %}" style="text-decoration: none">
+                            <div class="card-header">
+                               Total room {{apartmentD.bedroom_type}}
+                            </div>
+                        </a>
+                        {% else %}
+                                <br> No Rooms Available
+                               <br>
+                                <a href="{% url 'apartment_update'  apartmentD.flat_id %}">
+                                    <button class="btn btn-success"> Update Apartment </button>
+                                </a>
+                        {% endif %}
+                    </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <p> {{msg}}</p>
+        {% endif %}
+
+</div>
+<script>
+    setTimeout(function(){
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+
+    }, 2000);
+</script>
+
+{% endblock content %}

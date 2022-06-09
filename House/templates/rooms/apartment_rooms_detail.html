@@ -1,0 +1,53 @@
+{% extends 'Dashboard/base.html' %}
+
+{% block content %}
+
+{% if apartment %}
+
+<p class="card-header" style="text-transform: uppercase;"><a href="{% url 'estate_detailing'  apartment %}" style="text-decoration:none;color: green">{{ apartment.estate_name }} </a> >>>>
+<!--    {{estate.id}}|-->
+<!--    {{ b }}-->
+     |<a href="{% url 'block_details' estate.pk  b %}" style="text-decoration:none;color: blue"> Block  {{ apartment.block }}</a> >>>> {{ apartment.flat_id }}</p>
+
+{% if room %}
+<p class="card-body"> There {{ room|pluralize:"is,are"}} {{room|length}} rooms in {{apartment.flat_id}} </p>
+<p> {{ block.single_room }}</p>
+<div class="row" style="overflow-x: scroll;">
+    <div class="col-sm-12">
+        <table class="table" >
+            <thead>
+                <tr>
+                    <th> Room ID </th>
+                    <th> Unique Room ID </th>
+                    <th> Room Type </th>
+                    <th> Price </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for room in room %}
+                <tr>
+                    <td> {{ room.room_id }}</td>
+                    {% if room.unique_room_id %}
+                    <td> {{room.unique_room_id }} </td>
+
+                    <td> {{room.room_types }} </td>
+                    <td> {{ room.price }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% else %}
+<div class="row">
+    <div class="col-sm-12">
+        no rooms found
+    </div>
+</div>
+
+{% endif %}
+{% endif %}
+{% endblock content %}

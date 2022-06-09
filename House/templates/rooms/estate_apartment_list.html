@@ -1,0 +1,109 @@
+{% extends 'Dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% load House_extras %}
+
+
+{% block content %}
+{% comment %} {% load House_extras %} {% endcomment %}
+
+    {% if estates %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <h3 class="card-header"> Estate List </h3>
+        <p class="text-right"><a href="{% url 'estate_csv' %}"> Export To CSV </a></p>
+
+    <div class="row" style="overflow-x: scroll;">
+        <form method="get">
+            <div class="col-sm-12 mt-4">
+                {{ filter.form }}
+                <button type="submit" class="btn btn-success"> Search </button>
+            </div>
+        </form>
+    </div>
+    <div class="row" style="overflow-x: scroll;">
+        <div class="col-sm-12 mt-4">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th> Estate Name </th>
+                        <th> City </th>
+                        <th> Location </th>
+                        <th> Block </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for estate in estates %}
+                    <tr col-span="4">
+                        <td>
+                            <a href="{% url 'apartment_list' estate.estate_name %}" style="text-decoration: none">
+
+                                <p class="card-header"> {{ estate.estate_name }} </p>
+                            </a>
+                        </td>
+                        <td> {{ estate.city }} </td>
+                        <td> {{ estate.location }} </td>
+                        <td> {{ estate.block_set.count }} </td>
+
+                    </tr>
+                    {% empty %}
+
+                    <p> no room found </p>
+                    <button class="btn btn-info"><a href="{% url 'estate_listing' %}"> view all </a></button>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button class="btn btn-info" style="margin-left: 1150px"><a href="{% url 'estate_listing' %}" style="text-decoration: none" class="align: center"> show all </a></button>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if estates.has_previous %}
+                    <li class="page-item">
+                        <a href="{% my_url 1 'page' request.GET.urlencode%}" class="page-link">&laquo; First </a>
+                    </li>
+                    <li class="page-item">
+                        <a href="{% my_url estates.previous_page_number 'page' request.GET.urlencode %}" class="page-link"> Previous </a>
+                    </li>
+                    {% endif %}
+                    
+                    <li class="page-item">
+                        <span class="page-link">
+                        Page {{ estates.number}} of {{estates.paginator.num_pages}}
+                        </span>
+                    </li>
+
+
+                    {% if estates.has_next %}
+                    <li class="page-item">
+                        <a href="{% my_url estates.next_page_number 'page' request.GET.urlencode %}" class="page-link"> Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="{% my_url estates.paginator.num_pages 'page' request.GET.urlencode %}" class="page-link">&raquo; Last</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% else %}
+        <p> no estate found </p>
+    {% endif %}
+
+<script>
+    setTimeout(function(){
+        if ($('#msg').length > 0) {
+            $('#msg').remove();
+        }
+
+    }, 2000);
+</script>
+{% endblock %}
+
+

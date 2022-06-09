@@ -1,0 +1,46 @@
+
+{% extends 'Dashboard/base.html' %}
+
+{% block content %}
+
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert alert-{{ message.tags }}" id="msg">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+ {% endif %}
+ {% if estate %}
+    <h3> Estate List|Edit </h3>
+    <div class="row" style="margin-bottom: 150px">
+            {% for apartment in estate %}
+            <div class="col-sm-4 mt-4">
+                <div class="card text-center" style="border-radius: 40px;">
+                    <div class="card-body">
+                        {{apartment }}
+                    </div>
+                    <div class="text-center mb-4">
+                        <a href="{% url 'estate_delete' apartment.pk %}">
+                            <button class="btn btn-danger"> Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h3 class="card-header"> Estate Edit </h3>
+            <p> No Estate to edit anymore </p>
+            {% endif %}
+    </div>
+
+    <script>
+        setTimeout(function(){
+            if ($('#msg').length > 0) {
+                $('#msg').remove();
+            }
+            
+        }, 2000);
+    </script>
+{% endblock %}
+

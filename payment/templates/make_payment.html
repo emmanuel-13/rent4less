@@ -1,0 +1,33 @@
+ {% block content %}
+
+ <h4>You are about to make payment of: #{{ payment.amount }}</h4>
+ <hr>
+ <script src="https://js.paystack.co/v1/inline.js"></script>
+ <button type="submit" onclick="paywithPayStack()"> Process Payment </button>
+
+
+ <script>
+     function paywithPayStack() {
+         let currency = "NGN";
+         let ref = "{{ payment.ref }}";
+         let obj = {
+             key: '{{ paystack_public_key }}',
+             email: '{{ payment.email }}',
+             firstname: '{{ payment.orderitem.order.first_name }}',
+             amount: '{{ payment.amount_value }}',
+             ref: ref,
+
+             callback: function(response) {
+                 window.location.href = "{% url 'verify_payment' payment.ref %}"
+             }
+         }
+
+         if (Boolean(currency)) {
+             obj.currency = currency.toUpperCase()
+         }
+
+         var handler = PaystackPop.setup(obj)
+         handler.openIframe();
+     }
+ </script>
+ {% endblock content %}
